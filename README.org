@@ -4,7 +4,8 @@
 
 
 #+begin_src bash
-bash src/test_seedpsd_rollout_issue_88.bash
+cd src
+bash test_seedpsd_rollout_issue_88.bash
 #+end_src
 
 * Writing test
