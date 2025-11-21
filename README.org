@@ -1,0 +1,37 @@
+#+title: EIDA nodes tester
+
+* Usage
+
+
+#+begin_src bash
+bash src/test_seedpsd_rollout_issue_88.bash
+#+end_src
+
+* Writing test
+
+Start your script in the =src/= dir by sourcing the common lib:
+
+#+begin_src bash
+#!/usr/bin/env/bash
+
+source lib/nodes-tester.bash
+
+for node in $NODE_DEFINITIONS; do
+    eval $(parse_yaml "$node")
+    if http -F -q --check-status "$endpoint/eidaws/psd/1/" >/dev/null 2>&1; then
+        echo "- [x] $node"
+    else
+        echo "- [ ] $node"
+    fi
+done
+#+end_src
+
+The variable "$NODE_DEFINITIONS" contains a list of files to iterate to. Those files contain a yaml definition of the nodes, as used by eida-oculus.
+
+The yaml parsing is evaluated to load a bunch of SHELL variables like this:
+
+#+begin_src bash
+$endpoint 
+$onlineCheck_net $onlineCheck_sta ... 
+#+end_src
+
