@@ -20,8 +20,8 @@ resp = requests.get(
 )
 inventory = resp.json()
 
-# Embargo should start 3 years before now
-embargo_start = datetime(datetime.now().year - 3, 1, 1)
+# Embargo should start 2 years before now
+embargo_start = datetime(datetime.now().year - 2, 1, 1)
 
 for svc in inventory:
     url = svc["url"]
