@@ -18,14 +18,16 @@ function parse_yaml {
 }
 
 function update_repo {
-    SOURCE_REPO=oculus-monitoring-backend
-    GIT_OP="clone"
-    if [ -d "$SOURCE_REPO" ]; then GIT_OP="-C $SOURCE_REPO pull"; fi
-    git $GIT_OP "git@github.com:EIDA/$SOURCE_REPO"
+    local tempdir
+    tempdir=$(mktemp -d)
+    curl -LsS https://github.com/EIDA/oculus-monitoring-backend/tarball/main/ -o - | tar xzf - --wildcards '*/eida_nodes/*.yaml'
+    mv EIDA-oculus-monitoring-backend-*/eida_nodes "$tempdir"
+    rm -rf EIDA-oculus-monitoring-backend-*
+    echo "$tempdir/eida_nodes"
 }
 
-update_repo
-NODE_DEFINITIONS=$SOURCE_REPO/eida_nodes/*.yaml
+eida_nodes=$(update_repo)
+NODE_DEFINITIONS="$eida_nodes/*.yaml"
 export NODE_DEFINITIONS
 
 # Example of test:
